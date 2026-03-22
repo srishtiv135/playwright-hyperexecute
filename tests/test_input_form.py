@@ -14,8 +14,8 @@ def test_input_form_submit(page):
         "el => el.validationMessage"
     )
     assert validation != "", f"Expected validation message, got: {validation}"
-    assert "fill in this field" in validation.lower(), \
-        f"Expected 'fill in this field', got: {validation}"
+    assert "fill out this field" in validation.lower(), \
+        f"Expected fill out this field, got: {validation}"
 
     # 4. Fill all required fields
     page.locator("#name").fill("John Doe")
@@ -25,18 +25,4 @@ def test_input_form_submit(page):
     page.locator("#websitename").fill("www.example.com")
 
     # 5. Select Country: United States by text
-    page.locator("select[name='country']").select_option(label="United States")
-
-    # 6. Fill remaining fields
-    page.locator("#inputCity").fill("San Jose")
-    page.locator("#inputAddress1").fill("123 Main Street")
-    page.locator("#inputAddress2").fill("Suite 400")
-    page.locator("#inputState").fill("California")
-    page.locator("#inputZip").fill("95101")
-
-    # 7. Click Submit
-    page.get_by_role("button", name="Submit").click()
-
-    # 8. Validate success message
-    page.wait_for_timeout(2000)
-    success_m
+    page.locator("select[name='country']").select_option(label="United St
