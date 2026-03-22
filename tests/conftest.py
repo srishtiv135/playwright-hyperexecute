@@ -19,4 +19,3 @@ def page():
         context.tracing.stop(path="test-results/trace.zip")
         context.close()
         browser.close()
-test-results/videos/*.webm  ✅
