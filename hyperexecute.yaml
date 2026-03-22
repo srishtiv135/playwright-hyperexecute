@@ -17,11 +17,10 @@ pre:
   - playwright install chromium
   - pytest tests --collect-only -q 2>&1 || true
 
-cache:
-  key: pip-playwright-{{ checksum "requirements.txt" }}
-  paths:
-    - ~/.cache/pip
-    - ~/.cache/ms-playwright
+cacheKey: pip-playwright-{{ checksum "requirements.txt" }}
+cacheDirectories:
+  - ~/.cache/pip
+  - ~/.cache/ms-playwright
 
 artifacts:
   download:
