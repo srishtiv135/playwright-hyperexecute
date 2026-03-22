@@ -1,27 +1,25 @@
-name: Playwright Python Tests
+name: Run HyperExecute Tests
 
 on:
   push:
     branches: [ main ]
 
 jobs:
-  test:
+  hyperexecute:
     runs-on: ubuntu-latest
 
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
 
-      - name: Setup Python
-        uses: actions/setup-python@v4
-        with:
-          python-version: "3.10"
-
-      - name: Install dependencies
+      - name: Download HyperExecute CLI
         run: |
-          pip install -r requirements.txt
-          pip install pytest pytest-playwright pytest-xdist
-          playwright install
+          wget https://downloads.lambdatest.com/hyperexecute/linux/hyperexecute
+          chmod +x hyperexecute
 
-      - name: Run tests
-        run: pytest tests -n 2 -v
+      - name: Run HyperExecute
+        env:
+          LT_USERNAME: ${{ secrets.LT_USERNAME }}
+          LT_ACCESS_KEY: ${{ secrets.LT_ACCESS_KEY }}
+        run: |
+          ./hyperexecute --config hyperexecute.yaml
