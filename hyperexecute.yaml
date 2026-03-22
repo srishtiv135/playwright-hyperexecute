@@ -12,9 +12,9 @@ testRunner:
   prefix: ""
 
 testSuites:
-  - pytest tests/test_drag_slider.py -v --tb=short
-  - pytest tests/test_input_form.py -v --tb=short
-  - pytest tests/test_simple_form.py -v --tb=short
+  - pytest tests/test_drag_slider.py -v --tb=short --junit-xml=test-results/drag_slider.xml
+  - pytest tests/test_input_form.py -v --tb=short --junit-xml=test-results/input_form.xml
+  - pytest tests/test_simple_form.py -v --tb=short --junit-xml=test-results/simple_form.xml
 
 pre:
   - pip install -r requirements.txt
