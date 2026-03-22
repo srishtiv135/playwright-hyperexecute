@@ -1,28 +1,31 @@
-jobs:
-  hyperexecute:
-    runs-on: ubuntu-latest
+version: 0.1
+runson: linux
+concurrency: 2
 
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v3
+env:
+  MESSAGE: "Welcome to TestMu AI"
 
-      - name: Install dependencies
-        run: |
-          pip install -r requirements.txt
-          pip install pytest pytest-playwright pytest-xdist
-          playwright install
+framework:
+  name: pytest
+  discoveryType: raw
+  discoveryCommand: pytest tests --collect-only -q
+  testRunnerCommand: pytest $test -v --tb=short
 
-      - name: Run tests locally
-        run: pytest tests -n 2 -v
+pre:
+  - pip install -r requirements.txt
+  - pip install pytest pytest-playwright pytest-xdist
+  - playwright install chromium
 
-      - name: Download HyperExecute CLI
-        run: |
-          wget https://downloads.lambdatest.com/hyperexecute/linux/hyperexecute
-          chmod +x hyperexecute
+cache:
+  key: pip-playwright-{{ checksum "requirements.txt" }}
+  paths:
+    - ~/.cache/pip
+    - ~/.cache/ms-playwright
 
-      - name: Run HyperExecute
-        env:
-          LT_USERNAME: ${{ secrets.LT_USERNAME }}
-          LT_ACCESS_KEY: ${{ secrets.LT_ACCESS_KEY }}
-        run: |
-          ./hyperexecute --config hyperexecute.yaml
+artifacts:
+  download:
+    - playwright-report
+    - test-results
+
+post:
+  - echo "Execution completed"
