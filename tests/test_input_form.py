@@ -6,33 +6,37 @@ def test_input_form_submit(page):
     page.goto("https://www.testmuai.com/selenium-playground/")
     page.get_by_role("link", name="Input Form Submit").click()
 
-    # 2. Wait for the form to appear
-    form = page.locator("form").first
-    form.wait_for(state="visible")
+    # 2. Wait for page to load
+    page.wait_for_load_state("networkidle")
 
-    # 3. Click Submit without filling any info to trigger validation
-    form.get_by_role("button", name="Submit").click()
+    # 3. Click Submit without filling any info
+    page.locator("#submit").click()
 
-    # 4. Assert that at least one input shows validation error
-    required_input = form.locator("input:invalid").first
-    assert required_input, "Expected validation error message"
+    # 4. Assert validation error on first required field
+    validation = page.locator("#inputFirstName").evaluate(
+        "el => el.validationMessage"
+    )
+    assert "fill in this field" in validation.lower() or validation != "", \
+        f"Expected validation message, got: {validation}"
 
-    # 5. Fill in all required fields
-    form.locator("input[name='name']").fill("John Doe")
-    form.locator("input[name='email']").fill("johndoe@example.com")
-    form.locator("input[name='password']").fill("Password123")
-    form.locator("input[name='company']").fill("TestMu AI")
-    form.locator("input[name='website']").fill("www.example.com")
+    # 5. Fill all required fields
+    page.locator("#inputFirstName").fill("John")
+    page.locator("#inputLastName").fill("Doe")
+    page.locator("#inputEmail").fill("johndoe@example.com")
+    page.locator("#mobileid").fill("9876543210")
+    page.locator("#inputCity").fill("San Jose")
+    page.locator("#inputAddress1").fill("123 Main Street")
+    page.locator("#inputAddress2").fill("Suite 400")
+    page.locator("#inputState").fill("California")
+    page.locator("#inputZip").fill("95101")
 
-    # 6. Select Country: United States
-    form.locator("select[name='country']").select_option(label="United States")
+    # 6. Select Country: United States by text
+    page.locator("select[name='country']").select_option(label="United States")
 
-    # 7. Fill Comment
-    form.locator("textarea[name='comment']").fill("This is a test")
+    # 7. Click Submit
+    page.locator("#submit").click()
 
-    # 8. Click Submit
-    form.get_by_role("button", name="Submit").click()
-
-    # 9. Validate the success message
-    success_msg = page.locator("div.success").text_content()
-    assert "Thanks for contacting us" in success_msg
+    # 8. Validate success message
+    success_msg = page.locator(".success-msg").text_content()
+    assert "Thanks for contacting us, we will get back to you shortly." in success_msg, \
+        f"Unexpected message: {success_msg}"
