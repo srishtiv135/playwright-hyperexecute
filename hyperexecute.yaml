@@ -2,17 +2,29 @@ version: 0.1
 
 runson: linux
 
-concurrency: 1
-
-framework:
-  name: pytest
-  discoveryType: raw
-  discoveryCommand: pytest tests --collect-only
+concurrency: 2
 
 pre:
   - pip install -r requirements.txt
   - pip install pytest pytest-playwright pytest-xdist
   - playwright install
 
-testRunner:
+env:
+  MESSAGE: "Welcome to TestMu AI"
+
+cache:
+  - venv
+  - ~/.cache/ms-playwright
+
+testDiscovery:
+  type: raw
+  mode: dynamic
   command: pytest tests -n 2 -v
+
+artifacts:
+  download:
+    - playwright-report
+    - test-results
+
+post:
+  - echo "Execution completed"
