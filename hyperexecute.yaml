@@ -2,15 +2,12 @@ version: 0.1
 runson: linux
 concurrency: 2
 
-matrix:
-  os: [win, linux]
-
 env:
   MESSAGE: "Welcome to TestMu AI"
   LT_USERNAME: ${{ .secrets.LT_USERNAME }}
   LT_ACCESS_KEY: ${{ .secrets.LT_ACCESS_KEY }}
 
-testSuites:
+testList:
   - pytest tests/test_drag_slider.py -v --tb=short
   - pytest tests/test_input_form.py -v --tb=short
   - pytest tests/test_simple_form.py -v --tb=short
@@ -33,4 +30,4 @@ artifacts:
     - playwright-report
 
 post:
-  - echo "Execution completed on $LT_USERNAME account"
+  - echo "Execution completed"
