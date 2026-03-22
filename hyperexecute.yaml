@@ -10,10 +10,6 @@ env:
   LT_USERNAME: ${{ .secrets.LT_USERNAME }}
   LT_ACCESS_KEY: ${{ .secrets.LT_ACCESS_KEY }}
 
-testRunner:
-  command: pytest tests/ -v --tb=short
-  prefix: ""
-
 testSuites:
   - pytest tests/test_drag_slider.py -v --tb=short
   - pytest tests/test_input_form.py -v --tb=short
@@ -38,5 +34,3 @@ artifacts:
 
 post:
   - echo "Execution completed"
-  - ls -la test-results/ || true
-  - ls -la test-results/videos/ || true
