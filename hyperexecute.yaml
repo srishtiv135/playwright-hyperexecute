@@ -7,10 +7,10 @@ env:
   LT_USERNAME: ${{ .secrets.LT_USERNAME }}
   LT_ACCESS_KEY: ${{ .secrets.LT_ACCESS_KEY }}
 
-testList:
-  - pytest tests/test_drag_slider.py -v --tb=short
-  - pytest tests/test_input_form.py -v --tb=short
-  - pytest tests/test_simple_form.py -v --tb=short
+testSuites:
+  - pytest tests/test_drag_slider.py -v --tb=short --no-header
+  - pytest tests/test_input_form.py -v --tb=short --no-header
+  - pytest tests/test_simple_form.py -v --tb=short --no-header
 
 pre:
   - pip install -r requirements.txt
