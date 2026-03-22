@@ -27,13 +27,16 @@ cacheDirectories:
   - ~/.cache/pip
   - ~/.cache/ms-playwright
 
-artifacts:
-  download:
-    - name: TestResults
-      path:
-        - test-results/
+mergeArtifacts: true
+
+uploadArtefacts:
+  - name: TestResults
+    path:
+      - test-results/
+  - name: PlaywrightVideos
+    path:
+      - test-results/videos/
 
 post:
   - echo "Execution completed"
   - ls -la test-results/ || true
-  - ls -la test-results/videos/ || true
