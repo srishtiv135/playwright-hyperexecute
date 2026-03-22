@@ -1,16 +1,15 @@
-version: 0.2
+version: 0.1
 runson: linux
 concurrency: 2
 
 env:
   MESSAGE: "Welcome to TestMu AI"
 
-testDiscovery:
-  type: raw
-  mode: dynamic
-  command: pytest tests --collect-only -q
-
-testRunnerCommand: pytest $test -v --tb=short
+framework:
+  name: pytest
+  discoveryType: raw
+  discoveryCommand: pytest tests --collect-only -q
+  testRunnerCommand: pytest ${test} -v --tb=short
 
 pre:
   - pip install -r requirements.txt
