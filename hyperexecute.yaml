@@ -30,14 +30,4 @@ artifacts:
 
 post:
   - echo "Execution completed"
-```
 
----
-
-**What the `matrix` block does:**
-
-HyperExecute will create **2 parallel jobs**:
-```
-Job 1 → Windows → runs all 3 tests
-Job 2 → Linux   → runs all 3 tests
-        ↑ both at the same time
