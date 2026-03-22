@@ -19,6 +19,8 @@ pre:
   - pip install -r requirements.txt
   - pip install pytest pytest-playwright pytest-xdist
   - playwright install chromium
+  - mkdir -p test-results/videos
+  - mkdir -p playwright-report
 
 cacheKey: pip-playwright-{{ checksum "requirements.txt" }}
 cacheDirectories:
