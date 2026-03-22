@@ -2,6 +2,9 @@ version: 0.1
 runson: linux
 concurrency: 2
 
+matrix:
+  os: [win, linux]
+
 env:
   MESSAGE: "Welcome to TestMu AI"
   LT_USERNAME: ${{ .secrets.LT_USERNAME }}
