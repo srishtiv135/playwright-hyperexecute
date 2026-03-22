@@ -7,12 +7,14 @@ env:
   LT_USERNAME: ${{ .secrets.LT_USERNAME }}
   LT_ACCESS_KEY: ${{ .secrets.LT_ACCESS_KEY }}
 
-framework:
-  name: pytest
-  defaultContainerImage: lambdatest/pyrunner:latest
-  discoveryType: raw
-  discoveryCommand: pytest tests/ --collect-only -q
-  testRunnerCommand: pytest $test -v --tb=short --junit-xml=test-results/result.xml
+testRunner:
+  command: pytest tests/ -v --tb=short
+  prefix: ""
+
+testSuites:
+  - pytest tests/test_drag_slider.py -v --tb=short
+  - pytest tests/test_input_form.py -v --tb=short
+  - pytest tests/test_simple_form.py -v --tb=short
 
 pre:
   - pip install -r requirements.txt
