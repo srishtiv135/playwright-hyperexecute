@@ -1,10 +1,14 @@
 import pytest
 
 def test_drag_slider(page):
+    # 1. Open the playground and click "Drag & Drop Sliders"
     page.goto("https://www.testmuai.com/selenium-playground/")
     page.get_by_role("link", name="Drag & Drop Sliders").click()
+
+    # 2. Wait for slider to be visible
     page.wait_for_selector("#rangeSuccess")
 
+    # 3. Set "Default value 15" slider to 95
     page.evaluate("""() => {
         const output = document.getElementById('rangeSuccess');
         const slider = output.previousElementSibling;
@@ -17,16 +21,16 @@ def test_drag_slider(page):
 
     page.wait_for_timeout(1000)
 
-    debug = page.evaluate("""() => {
+    # 4. Run evaluate once more to allow page to settle
+    page.evaluate("""() => {
         const output = document.getElementById('rangeSuccess');
         const slider = output.previousElementSibling;
         return {
             sliderValue: slider.value,
-            outputText: output.textContent,
-            outputValue: output.value
+            outputText: output.textContent
         }
     }""")
-    print("AFTER SET:", debug)
 
+    # 5. Validate the range value shows 95
     value_text = page.locator("#rangeSuccess").text_content()
     assert value_text.strip() == "95", f"Slider value is {value_text}, expected 95"
