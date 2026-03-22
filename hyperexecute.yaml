@@ -4,6 +4,11 @@ runson: linux
 
 concurrency: 2
 
+framework:
+  name: pytest
+  discoveryType: raw
+  discoveryCommand: pytest tests --collect-only
+
 pre:
   - pip install -r requirements.txt
   - pip install pytest pytest-playwright pytest-xdist
