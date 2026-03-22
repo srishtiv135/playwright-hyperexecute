@@ -16,9 +16,7 @@ cache:
   - venv
   - ~/.cache/ms-playwright
 
-testDiscovery:
-  type: raw
-  mode: dynamic
+testRunner:
   command: pytest tests -n 2 -v
 
 artifacts:
