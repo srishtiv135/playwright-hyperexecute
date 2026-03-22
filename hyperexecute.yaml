@@ -1,28 +1,28 @@
 version: 0.1
-
 runson: linux
-
 concurrency: 2
+
+env:
+  MESSAGE: "Welcome to TestMu AI"
+  LT_USERNAME: ${{ .secrets.LT_USERNAME }}
+  LT_ACCESS_KEY: ${{ .secrets.LT_ACCESS_KEY }}
 
 framework:
   name: pytest
   discoveryType: raw
-  discoveryCommand: pytest tests --collect-only
+  discoveryCommand: pytest tests --collect-only -q   # <-- add -q
+  testRunnerCommand: pytest $test -v --tb=short       # <-- move inside framework
 
 pre:
   - pip install -r requirements.txt
   - pip install pytest pytest-playwright pytest-xdist
-  - playwright install
-
-env:
-  MESSAGE: "Welcome to TestMu AI"
+  - playwright install chromium
 
 cache:
-  - venv
-  - ~/.cache/ms-playwright
-
-testRunner:
-  command: pytest tests -n 2 -v
+  key: pip-playwright-{{ checksum "requirements.txt" }}
+  paths:
+    - ~/.cache/pip
+    - ~/.cache/ms-playwright
 
 artifacts:
   download:
