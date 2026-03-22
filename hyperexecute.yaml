@@ -29,8 +29,9 @@ cacheDirectories:
 
 artifacts:
   download:
-    - test-results
-    - playwright-report
+    - name: TestResults
+      path:
+        - test-results/
 
 post:
   - echo "Execution completed"
