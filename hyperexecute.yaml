@@ -8,13 +8,7 @@ env:
   LT_ACCESS_KEY: ${{ .secrets.LT_ACCESS_KEY }}
 
 testRunner:
-  command: pytest tests/ -v --tb=short
-  prefix: ""
-
-testSuites:
-  - pytest tests/test_drag_slider.py -v --tb=short --junit-xml=test-results/drag_slider.xml
-  - pytest tests/test_input_form.py -v --tb=short --junit-xml=test-results/input_form.xml
-  - pytest tests/test_simple_form.py -v --tb=short --junit-xml=test-results/simple_form.xml
+  command: pytest tests/ -v --tb=short --junit-xml=test-results/results.xml
 
 pre:
   - pip install -r requirements.txt
