@@ -2,14 +2,23 @@ import pytest
 from playwright.sync_api import expect
 
 def test_drag_slider(page):
-    # 1. Open the playground and click "Drag & Drop Sliders"
     page.goto("https://www.testmuai.com/selenium-playground/")
     page.get_by_role("link", name="Drag & Drop Sliders").click()
 
-    # 2. Get the first slider (Default value 15)
-    slider = page.locator("input[type='range']").nth(0)
+    # Debug: print all text content around sliders
+    result = page.evaluate("""
+        const slider = document.querySelectorAll("input[type='range']")[0];
+        const parent = slider.closest('.sp__range') || slider.parentElement;
+        return {
+            sliderValue: slider.value,
+            sliderMin: slider.min,
+            sliderMax: slider.max,
+            parentHTML: parent.outerHTML
+        }
+    """)
+    print("DEBUG:", result)
 
-    # 3. Set value to 95 using JavaScript (most reliable way)
+    # Set value
     page.evaluate("""
         const slider = document.querySelectorAll("input[type='range']")[0];
         slider.value = 95;
@@ -17,9 +26,14 @@ def test_drag_slider(page):
         slider.dispatchEvent(new Event('change', { bubbles: true }));
     """)
 
-    # 4. Wait for the display to update
-    page.wait_for_timeout(500)
+    page.wait_for_timeout(1000)
 
-    # 5. Validate the range value shows 95
-    value_text = page.locator("#rangeSuccess").text_content()
-    assert value_text.strip() == "95", f"Slider value is {value_text}, expected 95"
+    # Debug: check all elements with IDs near the slider
+    ids = page.evaluate("""
+        return [...document.querySelectorAll('[id]')]
+            .map(el => ({ id: el.id, text: el.textContent.trim() }))
+            .filter(el => el.text.length < 10)
+    """)
+    print("ALL IDs with short text:", ids)
+
+    assert False, "Debug run - check logs for element IDs"
