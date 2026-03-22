@@ -1,4 +1,4 @@
-version: 0.1
+version: 0.2
 runson: linux
 concurrency: 2
 
@@ -15,7 +15,6 @@ pre:
   - pip install -r requirements.txt
   - pip install pytest pytest-playwright pytest-xdist
   - playwright install chromium
-  - pytest tests --collect-only -q 2>&1 || true
 
 cacheKey: pip-playwright-{{ checksum "requirements.txt" }}
 cacheDirectories:
