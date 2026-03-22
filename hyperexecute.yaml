@@ -34,3 +34,5 @@ artifacts:
 
 post:
   - echo "Execution completed"
+  - ls -la test-results/ || true
+  - ls -la test-results/videos/ || true
