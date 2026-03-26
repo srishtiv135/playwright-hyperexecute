@@ -1,4 +1,9 @@
 version: 0.1
+
+runtime:
+  language: python
+  version: "3.9"
+
 runson: ${matrix.os}
 concurrency: 2
 
@@ -12,13 +17,13 @@ env:
   LT_ACCESS_KEY: ${{ .secrets.LT_ACCESS_KEY }}
 
 pre:
-  - pip install --upgrade pip --user
-  - pip install -r requirements.txt --force-reinstall --cache-dir ~/.cache/pip --user
+  - pip install --upgrade pip
+  - pip install -r requirements.txt --force-reinstall --cache-dir ~/.cache/pip
   - playwright install chromium
   - mkdir -p test-results/videos
   - mkdir -p playwright-report
 
-cacheKey: pip-playwright-v3-{{ checksum "requirements.txt" }}
+cacheKey: pip-playwright-v4-{{ checksum "requirements.txt" }}
 cacheDirectories:
   - ~/.cache/pip
   - ~/.cache/ms-playwright
@@ -38,3 +43,5 @@ uploadArtefacts:
 post:
   - echo "Execution completed"
   - ls -la test-results/ || true
+
+pytest-xdist==3.6.1
