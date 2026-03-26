@@ -15,6 +15,8 @@ def page():
         print(f"\nUSE_LT_CLOUD: {use_lt}")
         print(f"LT_USERNAME set: {bool(lt_username)}")
         print(f"LT_ACCESS_KEY set: {bool(lt_access_key)}")
+        print(f"USERNAME first 4 chars: {lt_username[:4]}")      # ADD THIS
+        print(f"ACCESS KEY first 4 chars: {lt_access_key[:4]}")  # ADD THIS
 
         if use_lt and lt_username and lt_access_key:
             capabilities = {
