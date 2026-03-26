@@ -9,6 +9,7 @@ env:
   MESSAGE: "Welcome"
   LT_USERNAME: ${{ .secrets.LT_USERNAME }}
   LT_ACCESS_KEY: ${{ .secrets.LT_ACCESS_KEY }}
+  USE_LT_CLOUD: "true"
 
 testSuites:
   - pytest tests/test_drag_slider.py -v --tb=short
