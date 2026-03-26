@@ -9,14 +9,16 @@ import urllib.parse
 def page():
     with sync_playwright() as p:
 
-        # ✅ DEFINE VARIABLES FIRST
+        # 🔐 Read environment variables
         lt_username = os.getenv("LT_USERNAME", "")
         lt_access_key = os.getenv("LT_ACCESS_KEY", "")
         use_lt = os.getenv("USE_LT_CLOUD", "false").lower() == "true"
 
+        # 🌐 CLOUD EXECUTION (HyperExecute / LambdaTest)
         if use_lt and lt_username and lt_access_key:
 
-            # ✅ CAPABILITIES INSIDE FIXTURE
+            print("✅ Running on LambdaTest Cloud...")
+
             capabilities = {
                 "browserName": "Chrome",
                 "browserVersion": "latest",
@@ -25,7 +27,7 @@ def page():
                     "accessKey": lt_access_key,
                     "platformName": "Windows 10",
 
-                    # 🔥 REQUIRED FOR EXAM
+                    # 🔥 REQUIRED FEATURES (EXAM)
                     "network": True,
                     "video": True,
                     "console": True,
@@ -33,13 +35,15 @@ def page():
 
                     "build": "Playwright HyperExecute Build",
                     "project": "TestMu Playwright Assignment",
-                    "name": "TestMu AI Playground Tests"
+                    "name": "TestMu AI Playground Tests",
+                    "plugin": "python-pytest"
                 }
             }
 
-            ws_url = f"wss://cdp.testmuai.com/playwright?capabilities={urllib.parse.quote(json.dumps(capabilities))}"
-
-            print("Connecting to cloud...")  # debug
+            ws_url = (
+                "wss://cdp.lambdatest.com/playwright?"
+                f"capabilities={urllib.parse.quote(json.dumps(capabilities))}"
+            )
 
             browser = p.chromium.connect(ws_url)
             context = browser.new_context()
@@ -50,8 +54,9 @@ def page():
             context.close()
             browser.close()
 
+        # 💻 LOCAL EXECUTION
         else:
-            print("Running locally...")  # debug
+            print("⚠️ Running locally...")
 
             browser = p.chromium.launch(headless=True)
             context = browser.new_context(
