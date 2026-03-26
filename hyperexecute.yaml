@@ -20,8 +20,7 @@ pre:
   - python -m pip install --upgrade pip
   - python -m pip install -r requirements.txt --force-reinstall --cache-dir ~/.cache/pip
   - python -m playwright install chromium
-  - mkdir -p test-results/videos
-  - mkdir -p playwright-report
+  - python -c "import os; os.makedirs('test-results/videos', exist_ok=True); os.makedirs('playwright-report', exist_ok=True)"
   
 cacheKey: "pip-playwright-v4"
 cacheDirectories:
