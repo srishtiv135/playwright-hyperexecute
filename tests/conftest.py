@@ -13,7 +13,6 @@ def page():
         use_lt = os.getenv("USE_LT_CLOUD", "false").lower() == "true"
 
         if use_lt and lt_username and lt_access_key:
-            # Connect to LambdaTest cloud with capabilities
             capabilities = {
                 "browserName": "Chrome",
                 "browserVersion": "dev",
@@ -43,7 +42,6 @@ def page():
             browser.close()
 
         else:
-            # Local/HyperExecute run
             browser = p.chromium.launch(headless=True)
             context = browser.new_context(
                 record_video_dir="test-results/videos/",
