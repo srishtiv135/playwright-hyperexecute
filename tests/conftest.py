@@ -11,17 +11,17 @@ def page():
         lt_access_key = os.getenv("LT_ACCESS_KEY", "")
         use_lt = os.getenv("USE_LT_CLOUD", "false").lower() == "true"
 
-        # Debug prints - remove after fixing
+        # Debug prints
         print(f"\nUSE_LT_CLOUD: {use_lt}")
         print(f"LT_USERNAME set: {bool(lt_username)}")
         print(f"LT_ACCESS_KEY set: {bool(lt_access_key)}")
-        print(f"USERNAME first 4 chars: {lt_username[:4]}")      # ADD THIS
-        print(f"ACCESS KEY first 4 chars: {lt_access_key[:4]}")  # ADD THIS
+        print(f"USERNAME first 4 chars: {lt_username[:4]}")
+        print(f"ACCESS KEY first 4 chars: {lt_access_key[:4]}")
 
         if use_lt and lt_username and lt_access_key:
             capabilities = {
                 "browserName": "Chrome",
-                "browserVersion": "latest",        # FIXED: was "dev"
+                "browserVersion": "latest",
                 "LT:Options": {
                     "username": lt_username,
                     "accessKey": lt_access_key,
@@ -29,7 +29,7 @@ def page():
                     "video": True,
                     "network": True,
                     "console": True,
-                    "platformName": os.getenv("LT_OS", "Windows 10"),  # FIXED: from env
+                    "platformName": os.getenv("LT_OS", "Windows 10"),
                     "build": "Playwright HyperExecute Build",
                     "project": "TestMu Playwright Assignment",
                     "name": "TestMu AI Playground Tests",
@@ -37,10 +37,13 @@ def page():
                     "plugin": "python-pytest"
                 }
             }
-            browser = p.chromium.connect(
-                f"wss://cdp.lambdatest.com/playwright?capabilities="
-                f"{urllib.parse.quote(json.dumps(capabilities))}"
-            )
+
+            ws_url = f"wss://cdp.lambdatest.com/playwright?capabilities={urllib.parse.quote(json.dumps(capabilities))}"
+
+            print(f"Connecting to: wss://cdp.lambdatest.com/playwright")
+            print(f"Username: {lt_username[:4]}***")
+
+            browser = p.chromium.connect(ws_url)
             context = browser.new_context()
             page = context.new_page()
             yield page
