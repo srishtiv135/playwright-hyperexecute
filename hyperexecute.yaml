@@ -16,10 +16,9 @@ testSuites:
   - pytest tests/test_drag_slider.py -v --tb=short
   - pytest tests/test_input_form.py -v --tb=short
   - pytest tests/test_simple_form.py -v --tb=short
-
+  
 pre:
-  - pip install -r requirements.txt
-  - pip install pytest pytest-playwright pytest-xdist
+  - pip install -r requirements.txt --cache-dir ~/.cache/pip
   - playwright install chromium
   - mkdir -p test-results/videos
   - mkdir -p playwright-report
