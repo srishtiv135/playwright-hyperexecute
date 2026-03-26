@@ -1,5 +1,5 @@
 version: 0.1
-runson: linux
+runson: ${matrix.os}
 concurrency: 2
 
 matrix:
@@ -8,25 +8,22 @@ matrix:
 env:
   MESSAGE: "Welcome to TestMu AI"
   USE_LT_CLOUD: "true"
-  LT_OS: "${matrix.os == 'win' and 'Windows 10' or 'Linux'}"
   LT_USERNAME: ${{ .secrets.LT_USERNAME }}
   LT_ACCESS_KEY: ${{ .secrets.LT_ACCESS_KEY }}
 
-testSuites:
-  - pytest tests/test_drag_slider.py -v --tb=short
-  - pytest tests/test_input_form.py -v --tb=short
-  - pytest tests/test_simple_form.py -v --tb=short
-  
 pre:
-  - pip install -r requirements.txt --cache-dir ~/.cache/pip
+  - pip install --upgrade pip
+  - pip install -r requirements.txt --force-reinstall --cache-dir ~/.cache/pip
   - playwright install chromium
   - mkdir -p test-results/videos
   - mkdir -p playwright-report
 
-cacheKey: pip-playwright-{{ checksum "requirements.txt" }}
+cacheKey: pip-playwright-v3-{{ checksum "requirements.txt" }}
 cacheDirectories:
   - ~/.cache/pip
   - ~/.cache/ms-playwright
+
+testRunnerCommand: pytest tests/ -v --tb=short
 
 mergeArtifacts: true
 
