@@ -7,28 +7,24 @@ import urllib.parse
 @pytest.fixture
 def page():
     with sync_playwright() as p:
+
         lt_username = os.getenv("LT_USERNAME", "")
         lt_access_key = os.getenv("LT_ACCESS_KEY", "")
         use_lt = os.getenv("USE_LT_CLOUD", "false").lower() == "true"
 
-        print(f"\nUSE_LT_CLOUD: {use_lt}")
-        print(f"LT_USERNAME set: {bool(lt_username)}")
-        print(f"LT_ACCESS_KEY set: {bool(lt_access_key)}")
-        print(f"USERNAME first 4 chars: {lt_username[:4]}")
-        print(f"ACCESS KEY first 4 chars: {lt_access_key[:4]}")
-
         if use_lt and lt_username and lt_access_key:
+            # Connect to LambdaTest cloud with capabilities
             capabilities = {
-                "browserName": "pw-chromium",      # FIXED
-                "browserVersion": "latest",
+                "browserName": "Chrome",
+                "browserVersion": "dev",
                 "LT:Options": {
-                    "user": lt_username,            # FIXED: was "username"
+                    "username": lt_username,
                     "accessKey": lt_access_key,
                     "visual": True,
                     "video": True,
                     "network": True,
                     "console": True,
-                    "platform": os.getenv("LT_OS", "Windows 10"),  # FIXED: was "platformName"
+                    "platformName": "Windows 10",
                     "build": "Playwright HyperExecute Build",
                     "project": "TestMu Playwright Assignment",
                     "name": "TestMu AI Playground Tests",
@@ -36,13 +32,10 @@ def page():
                     "plugin": "python-pytest"
                 }
             }
-
-            ws_url = f"wss://cdp.lambdatest.com/playwright?capabilities={urllib.parse.quote(json.dumps(capabilities))}"
-
-            print(f"Connecting to: wss://cdp.lambdatest.com/playwright")
-            print(f"Username: {lt_username[:4]}***")
-
-            browser = p.chromium.connect(ws_url)
+            browser = p.chromium.connect(
+                f"wss://cdp.lambdatest.com/playwright?capabilities="
+                f"{urllib.parse.quote(json.dumps(capabilities))}"
+            )
             context = browser.new_context()
             page = context.new_page()
             yield page
@@ -50,6 +43,7 @@ def page():
             browser.close()
 
         else:
+            # Local/HyperExecute run
             browser = p.chromium.launch(headless=True)
             context = browser.new_context(
                 record_video_dir="test-results/videos/",
