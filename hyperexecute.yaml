@@ -20,14 +20,16 @@ pre:
   - python -m pip install --upgrade pip
   - python -m pip install -r requirements.txt --force-reinstall --cache-dir ~/.cache/pip
   - python -m playwright install chromium
-  - python -m pytest --version
-  
+
 cacheKey: "pip-playwright-v4"
 cacheDirectories:
   - ~/.cache/pip
   - ~/.cache/ms-playwright
 
-testRunnerCommand: pytest tests/ -v --tb=short
+testSuites:
+  - python -m pytest tests/test_drag_slider.py -v --tb=short
+  - python -m pytest tests/test_input_form.py -v --tb=short
+  - python -m pytest tests/test_simple_form.py -v --tb=short
 
 mergeArtifacts: true
 
