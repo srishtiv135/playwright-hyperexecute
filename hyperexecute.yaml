@@ -17,9 +17,11 @@ env:
   LT_ACCESS_KEY: ${{ .secrets.LT_ACCESS_KEY }}
 
 pre:
-  - python -m pip install --upgrade pip
-  - python -m pip install -r requirements.txt --force-reinstall --cache-dir ~/.cache/pip
+  - python -m pip install --upgrade pip --force
+  - python -m pip install playwright==1.44.0 --force-reinstall --ignore-installed
+  - python -m pip install -r requirements.txt --force-reinstall --ignore-installed
   - python -m playwright install chromium
+  - python -c "import playwright; print(playwright.__version__)"
 
 cacheKey: "pip-playwright-v4"
 cacheDirectories:
