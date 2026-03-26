@@ -12,8 +12,8 @@ env:
   LT_ACCESS_KEY: ${{ .secrets.LT_ACCESS_KEY }}
 
 pre:
-  - pip install --upgrade pip
-  - pip install -r requirements.txt --force-reinstall --cache-dir ~/.cache/pip
+  - pip install --upgrade pip --user
+  - pip install -r requirements.txt --force-reinstall --cache-dir ~/.cache/pip --user
   - playwright install chromium
   - mkdir -p test-results/videos
   - mkdir -p playwright-report
