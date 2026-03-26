@@ -23,7 +23,7 @@ pre:
   - mkdir -p test-results/videos
   - mkdir -p playwright-report
 
-cacheKey: pip-playwright-v4-{{ checksum "requirements.txt" }}
+cacheKey: "pip-playwright-v4"
 cacheDirectories:
   - ~/.cache/pip
   - ~/.cache/ms-playwright
@@ -42,6 +42,3 @@ uploadArtefacts:
 
 post:
   - echo "Execution completed"
-  - ls -la test-results/ || true
-
-pytest-xdist==3.6.1
