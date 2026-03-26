@@ -5,7 +5,6 @@ def test_input_form_submit(page):
     page.get_by_role("link", name="Input Form Submit").click()
     page.wait_for_load_state("networkidle")
 
-    # Wait for form to be visible
     page.wait_for_selector("#name", state="visible")
 
     page.get_by_role("button", name="Submit").click()
@@ -29,8 +28,6 @@ def test_input_form_submit(page):
     page.locator("#inputZip").fill("95101")
 
     page.get_by_role("button", name="Submit").click()
-
-    # Wait until success message appears
     page.wait_for_selector(".success-msg", state="visible")
     success_msg = page.locator(".success-msg").text_content()
     assert "Thanks for contacting us, we will get back to you shortly." in success_msg, \
