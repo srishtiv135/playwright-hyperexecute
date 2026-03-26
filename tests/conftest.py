@@ -11,7 +11,6 @@ def page():
         lt_access_key = os.getenv("LT_ACCESS_KEY", "")
         use_lt = os.getenv("USE_LT_CLOUD", "false").lower() == "true"
 
-        # Debug prints
         print(f"\nUSE_LT_CLOUD: {use_lt}")
         print(f"LT_USERNAME set: {bool(lt_username)}")
         print(f"LT_ACCESS_KEY set: {bool(lt_access_key)}")
@@ -20,16 +19,16 @@ def page():
 
         if use_lt and lt_username and lt_access_key:
             capabilities = {
-                "browserName": "Chrome",
+                "browserName": "pw-chromium",      # FIXED
                 "browserVersion": "latest",
                 "LT:Options": {
-                    "username": lt_username,
+                    "user": lt_username,            # FIXED: was "username"
                     "accessKey": lt_access_key,
                     "visual": True,
                     "video": True,
                     "network": True,
                     "console": True,
-                    "platformName": os.getenv("LT_OS", "Windows 10"),
+                    "platform": os.getenv("LT_OS", "Windows 10"),  # FIXED: was "platformName"
                     "build": "Playwright HyperExecute Build",
                     "project": "TestMu Playwright Assignment",
                     "name": "TestMu AI Playground Tests",
