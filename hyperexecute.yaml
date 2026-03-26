@@ -1,10 +1,5 @@
 version: 0.1
-
-runtime:
-  language: python
-  version: "3.9"
-
-runson: ${matrix.os}
+runson: linux
 concurrency: 2
 
 matrix:
@@ -12,26 +7,25 @@ matrix:
 
 env:
   MESSAGE: "Welcome to TestMu AI"
-  USE_LT_CLOUD: "true"
   LT_USERNAME: ${{ .secrets.LT_USERNAME }}
   LT_ACCESS_KEY: ${{ .secrets.LT_ACCESS_KEY }}
 
-pre:
-  - python -m pip install --upgrade pip --force
-  - python -m pip install playwright==1.44.0 --force-reinstall --ignore-installed
-  - python -m pip install -r requirements.txt --force-reinstall --ignore-installed
-  - python -m playwright install chromium
-  - python -c "import playwright; print(playwright.__version__)"
+testSuites:
+  - pytest tests/test_drag_slider.py -v --tb=short
+  - pytest tests/test_input_form.py -v --tb=short
+  - pytest tests/test_simple_form.py -v --tb=short
 
-cacheKey: "pip-playwright-v4"
+pre:
+  - pip install -r requirements.txt
+  - pip install pytest pytest-playwright pytest-xdist
+  - playwright install chromium
+  - mkdir -p test-results/videos
+  - mkdir -p playwright-report
+
+cacheKey: pip-playwright-{{ checksum "requirements.txt" }}
 cacheDirectories:
   - ~/.cache/pip
   - ~/.cache/ms-playwright
-
-testSuites:
-  - python -m pytest tests/test_drag_slider.py -v --tb=short
-  - python -m pytest tests/test_input_form.py -v --tb=short
-  - python -m pytest tests/test_simple_form.py -v --tb=short
 
 mergeArtifacts: true
 
@@ -45,3 +39,4 @@ uploadArtefacts:
 
 post:
   - echo "Execution completed"
+  - ls -la test-results/ || true
