@@ -7,6 +7,7 @@ matrix:
 
 env:
   MESSAGE: "Welcome to TestMu AI"
+  USE_LT_CLOUD: "true"
   LT_USERNAME: ${{ .secrets.LT_USERNAME }}
   LT_ACCESS_KEY: ${{ .secrets.LT_ACCESS_KEY }}
 
