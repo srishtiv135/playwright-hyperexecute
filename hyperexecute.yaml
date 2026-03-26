@@ -8,6 +8,7 @@ matrix:
 env:
   MESSAGE: "Welcome to TestMu AI"
   USE_LT_CLOUD: "true"
+  LT_OS: "${matrix.os == 'win' and 'Windows 10' or 'Linux'}"
   LT_USERNAME: ${{ .secrets.LT_USERNAME }}
   LT_ACCESS_KEY: ${{ .secrets.LT_ACCESS_KEY }}
 
