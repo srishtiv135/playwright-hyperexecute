@@ -4,7 +4,6 @@ def test_drag_slider(page):
     page.goto("https://www.testmuai.com/selenium-playground/")
     page.get_by_role("link", name="Drag & Drop Sliders").click()
 
-    # Wait for slider to be visible
     page.wait_for_selector("#rangeSuccess", state="visible")
 
     page.evaluate("""() => {
@@ -17,7 +16,6 @@ def test_drag_slider(page):
         slider.dispatchEvent(new Event('change', { bubbles: true }));
     }""")
 
-    # Wait until value is actually 95
     page.wait_for_function(
         "() => document.getElementById('rangeSuccess').textContent.trim() === '95'"
     )
